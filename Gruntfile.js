@@ -17,6 +17,10 @@ module.exports = function(grunt) {
 					src: ["src/*.js", "src/server/**/*.js", "build/util/**/*.js", "Gruntfile.js"]
 				}
 			}
+		},
+
+		nodeunit: {
+			all: ["src/_*_test.js", "src/server/**/_*_test.js"]
 		}
 
 
@@ -38,11 +42,14 @@ module.exports = function(grunt) {
 //  // Default task(s).
 //  grunt.registerTask('default', ['uglify']);
 
-	grunt.loadNpmTasks("grunt-contrib-jshint");
 
-	grunt.registerTask("default", "Default Description", ["jshint"], function() {
+	grunt.registerTask("default", "Lint and test", ["jshint", "nodeunit"], function() {
 		console.log("\n\nOK");
 	});
+
+	grunt.loadNpmTasks("grunt-contrib-jshint");
+	grunt.loadNpmTasks("grunt-contrib-nodeunit");
+
 
 	function globalLintOptions() {
 		return {

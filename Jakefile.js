@@ -51,7 +51,6 @@
 		var testFiles = new jake.FileList();
 		testFiles.include("src/_*_test.js");
 		testFiles.include("src/server/**/_*_test.js");
-		testFiles.exclude("node_modules");
 		var tests = testFiles.toArray();
 		return tests;
 	}
