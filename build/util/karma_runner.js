@@ -21,9 +21,9 @@
 		runner.run(CONFIG, function(exitCode) {
 			stdout.restore();
 
-			if (exitCode) fail("Client tests failed (to start server, run 'jake karma')");
+			if (exitCode) fail("Client tests failed.");
 			var browserMissing = checkRequiredBrowsers(requiredBrowsers, stdout);
-			if (browserMissing && !process.env.loose) fail("Did not test all supported browsers (use 'loose=true' to suppress error)");
+			if (browserMissing && !process.env.loose) fail("Did not test all supported browsers.");
 			if (stdout.capturedOutput.indexOf("TOTAL: 0 SUCCESS") !== -1) fail("No tests were run!");
 
 			success();

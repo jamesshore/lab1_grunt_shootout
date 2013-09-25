@@ -1,5 +1,7 @@
 "use strict";
 
+var karma = require("./build/util/karma_runner.js");
+
 module.exports = function(grunt) {
 
 	// Project configuration.
@@ -21,6 +23,12 @@ module.exports = function(grunt) {
 
 		nodeunit: {
 			all: ["src/_*_test.js", "src/server/**/_*_test.js"]
+		},
+
+		karma: {
+			all: {
+				configFile: "build/config/karma.conf.js"
+			}
 		}
 
 
@@ -47,9 +55,13 @@ module.exports = function(grunt) {
 		console.log("\n\nOK");
 	});
 
+	grunt.registerTask("testClient", "Test browser code", function() {
+		karma.runTests([], this.async(), grunt.warn);
+	});
+
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-nodeunit");
-
+	grunt.loadNpmTasks("grunt-karma");
 
 	function globalLintOptions() {
 		return {
