@@ -1,23 +1,20 @@
+// Copyright (c) 2012 Titanium I.T. LLC. All rights reserved. See LICENSE.txt for details.
+
 "use strict";
 
 var karma = require("./build/util/karma_runner.js");
 
 module.exports = function(grunt) {
 
-	// Project configuration.
 	grunt.initConfig({
 		jshint: {
 			browser: {
 				options: browserLintOptions(),
-				files: {
-					src: "src/client/**/*.js"
-				}
+				src: "src/client/**/*.js"
 			},
 			node: {
 				options: nodeLintOptions(),
-				files: {
-					src: ["src/*.js", "src/server/**/*.js", "build/util/**/*.js", "Gruntfile.js"]
-				}
+				src: ["src/*.js", "src/server/**/*.js", "build/util/**/*.js", "Jakefile.js", "Gruntfile.js"]
 			}
 		},
 
@@ -26,42 +23,35 @@ module.exports = function(grunt) {
 		},
 
 		karma: {
-			all: {
+			server: {
 				configFile: "build/config/karma.conf.js"
 			}
+		},
+
+		runKarma: {
+			// Modify (or comment out) the following list to cause the build to fail unless these browsers are tested.
+			requiredBrowsers: [
+				"IE 8.0.0 (Windows XP)",
+				"IE 9.0.0 (Windows 7)",
+				"Firefox 23.0.0 (Mac OS X 10.8)",
+				"Chrome 29.0.1547 (Mac OS X 10.8.5)",
+				"Safari 6.0.5 (Mac OS X 10.8.5)",
+				"Mobile Safari 6.0.0 (iOS 6.1)"
+			]
 		}
-
-
-//    pkg: grunt.file.readJSON('package.json'),
-//    uglify: {
-//      options: {
-//        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-//      },
-//      build: {
-//        src: 'src/<%= pkg.name %>.js',
-//        dest: 'build/<%= pkg.name %>.min.js'
-//      }
-//    }
 	});
 
-//  // Load the plugin that provides the "uglify" task.
-//  grunt.loadNpmTasks('grunt-contrib-uglify');
-//
-//  // Default task(s).
-//  grunt.registerTask('default', ['uglify']);
+	grunt.registerTask("default", "Lint and test", ["jshint", "test"]);
 
+	grunt.registerTask("test", "Test everything", ["nodeunit", "runKarma"]);
 
-	grunt.registerTask("default", "Lint and test", ["jshint", "nodeunit"], function() {
-		console.log("\n\nOK");
+	grunt.registerTask("runKarma", "Test browser code", function() {
+		karma.runTests(grunt.config("runKarma.requiredBrowsers"), this.async(), grunt.warn);
 	});
 
-	grunt.registerTask("testClient", "Test browser code", function() {
-		karma.runTests([], this.async(), grunt.warn);
-	});
-
+	grunt.loadNpmTasks("grunt-karma");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-nodeunit");
-	grunt.loadNpmTasks("grunt-karma");
 
 	function globalLintOptions() {
 		return {
