@@ -3,10 +3,13 @@
 
 var gulp = require("gulp");
 
-gulp.task("default", function() {
-	console.log("Hi");
+gulp.task("default", ["lint"], function() {
+	console.log("\n\nOK");
 });
 
+gulp.task("lint", function() {
+	console.log("Linting stuff goes here.");
+});
 
 //var lint = require("./build/util/lint_runner.js");
 //var nodeunit = require("./build/util/nodeunit_runner.js");
