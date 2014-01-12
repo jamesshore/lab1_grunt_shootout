@@ -2,9 +2,12 @@
 "use strict";
 
 var gulp = require("gulp");
-var jshint = require("gulp-jshint");
+var glob = require("glob");
 
-gulp.task("default", ["lint"], function() {
+var jshint = require("gulp-jshint");
+var nodeunit = require("./build/util/nodeunit_runner.js");
+
+gulp.task("default", ["lint", "test"], function() {
 	console.log("\n\nOK");
 });
 
@@ -20,6 +23,19 @@ gulp.task("lintClient", function() {
   gulp.src("src/client/**/*.js")
     .pipe(jshint(browserLintOptions()))
     .pipe(jshint.reporter('default'));
+});
+
+gulp.task("test", ["testNode", "testClient"]);
+
+gulp.task("testNode", function(done) {
+	nodeFilesToTest(function(err, files) {
+		if (err) return done(err);
+		nodeunit.runTests(files, done, done);
+	});
+});
+
+gulp.task("testClient", function() {
+	console.log("TBD");
 });
 
 //var lint = require("./build/util/lint_runner.js");
@@ -65,30 +81,18 @@ gulp.task("lintClient", function() {
 //task("testClient", function() {
 //	karma.runTests(REQUIRED_BROWSERS, complete, fail);
 //}, {async: true});
-//
-//function nodeFilesToTest() {
-//	var testFiles = new jake.FileList();
-//	testFiles.include("src/_*_test.js");
-//	testFiles.include("src/server/**/_*_test.js");
-//	var tests = testFiles.toArray();
-//	return tests;
-//}
-//
-//function nodeFilesToLint() {
-//	var files = new jake.FileList();
-//	files.include("src/*.js");
-//	files.include("src/server/**/*.js");
-//	files.include("build/util/**/*.js");
-//	files.include("Jakefile.js");
-//	files.include("Gruntfile.js");
-//	return files.toArray();
-//}
-//
-//function browserFilesToLint() {
-//	var files = new jake.FileList();
-//	files.include("src/client/**/*.js");
-//	return files.toArray();
-//}
+
+function nodeFilesToTest(callback) {
+	glob("src/_*_test.js", function(err, srcFiles) {
+		if (err) return callback(err);
+
+		glob("src/server/**/_*_test.js", function(err2, serverFiles) {
+			if (err2) return callback(err2);
+
+			callback(null, srcFiles.concat(serverFiles));
+		});
+	});
+}
 
 function globalLintOptions() {
 	return {
