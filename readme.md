@@ -25,7 +25,7 @@ To build (and test):
 2. Start the browsers you want to test and point each one at `http://localhost:8080`.
 3. Run `./jake.sh` (Unix/Mac) or `jake` (Windows) every time you want to build and test.
 
-Use `./grunt.sh` (or `grunt` on Windows`) instead of `./jake.sh` (or `jake`) to use Grunt instead of Jake. Use `./gulp.sh` (or `gulp`) to use Gulp.
+Use `./grunt.sh` (or `grunt` on Windows) instead of `./jake.sh` (or `jake`) to use Grunt instead of Jake. Use `./gulp.sh` (or `gulp`) to use Gulp.
 
 
 License
