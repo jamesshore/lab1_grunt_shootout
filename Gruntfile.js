@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 			},
 			node: {
 				options: nodeLintOptions(),
-				src: ["src/*.js", "src/server/**/*.js", "build/util/**/*.js", "Jakefile.js", "Gruntfile.js"]
+				src: ["src/*.js", "src/server/**/*.js", "build/util/**/*.js", "*.js"]
 			}
 		},
 

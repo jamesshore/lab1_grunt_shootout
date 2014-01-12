@@ -2,13 +2,24 @@
 "use strict";
 
 var gulp = require("gulp");
+var jshint = require("gulp-jshint");
 
 gulp.task("default", ["lint"], function() {
 	console.log("\n\nOK");
 });
 
-gulp.task("lint", function() {
-	console.log("Linting stuff goes here.");
+gulp.task("lint", ["lintNode", "lintClient"]);
+
+gulp.task("lintNode", function() {
+  gulp.src(["src/*.js", "src/server/**/*.js", "build/util/**/*.js", "*.js"])
+    .pipe(jshint(nodeLintOptions()))
+    .pipe(jshint.reporter('default'));
+});
+
+gulp.task("lintClient", function() {
+  gulp.src("src/client/**/*.js")
+    .pipe(jshint(browserLintOptions()))
+    .pipe(jshint.reporter('default'));
 });
 
 //var lint = require("./build/util/lint_runner.js");
@@ -78,34 +89,34 @@ gulp.task("lint", function() {
 //	files.include("src/client/**/*.js");
 //	return files.toArray();
 //}
-//
-//function globalLintOptions() {
-//	return {
-//		bitwise:true,
-//		curly:false,
-//		eqeqeq:true,
-//		forin:true,
-//		immed:true,
-//		latedef:false,
-//		newcap:true,
-//		noarg:true,
-//		noempty:true,
-//		nonew:true,
-//		regexp:true,
-//		undef:true,
-//		strict:true,
-//		trailing:true
-//	};
-//}
-//
-//function nodeLintOptions() {
-//	var options = globalLintOptions();
-//	options.node = true;
-//	return options;
-//}
-//
-//function browserLintOptions() {
-//	var options = globalLintOptions();
-//	options.browser = true;
-//	return options;
-//}
+
+function globalLintOptions() {
+	return {
+		bitwise:true,
+		curly:false,
+		eqeqeq:true,
+		forin:true,
+		immed:true,
+		latedef:false,
+		newcap:true,
+		noarg:true,
+		noempty:true,
+		nonew:true,
+		regexp:true,
+		undef:true,
+		strict:true,
+		trailing:true
+	};
+}
+
+function nodeLintOptions() {
+	var options = globalLintOptions();
+	options.node = true;
+	return options;
+}
+
+function browserLintOptions() {
+	var options = globalLintOptions();
+	options.browser = true;
+	return options;
+}

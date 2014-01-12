@@ -60,8 +60,7 @@ function nodeFilesToLint() {
 	files.include("src/*.js");
 	files.include("src/server/**/*.js");
 	files.include("build/util/**/*.js");
-	files.include("Jakefile.js");
-	files.include("Gruntfile.js");
+	files.include("*.js");
 	return files.toArray();
 }
 
